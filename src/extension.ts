@@ -65,6 +65,7 @@ interface LogParseConfig {
 }
 
 interface ParsedLog {
+    dateTime: string;
     fileName: string;
     lineNumber: string;
     level: string;
@@ -154,36 +155,54 @@ class LogViewerPanel {
 
     // Accept defaultLogDir as parameter
     private _getHtmlForWebview(webview: vscode.Webview, defaultLogDir: string) {
-        const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js'));
-        const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css'));
+    const scriptUri = webview.asWebviewUri(
+        vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js')
+    );
+    const styleUri = webview.asWebviewUri(
+        vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css')
+    );
 
-        return /*html*/`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Log Viewer</title>
-            <link href="${styleUri}" rel="stylesheet">
-        </head>
-        <body>
-            <div>
-                <input type="text" id="logDir" placeholder="Set Log Directory" value="${defaultLogDir.replace(/\\/g, '\\\\')}" />
-                <button class="primary" onclick="setDirectory()">Set Directory</button>
-                <button class="primary" onclick="loadLogs()">Load</button>
-                <select id="logLevel" onchange="filterLogs()">
-                    <option value="ALL">ALL</option>
-                    <option value="INFO">INFO</option>
-                    <option value="WARN">WARN</option>
-                    <option value="ERROR">ERROR</option>
-                </select>
-                <button class="secondary" onclick="clearLogs()">Clear</button>
-            </div>
-            <div id="logContainer"></div>
-            <script src="${scriptUri}"></script>
-        </body>
-        </html>`;
-    }
+    return /*html*/`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Log Viewer</title>
+        <link href="${styleUri}" rel="stylesheet" />
+    </head>
+    <body>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <input
+                type="text"
+                id="logDir"
+                placeholder="Set Log Directory"
+                value="${defaultLogDir.replace(/\\/g, '\\\\')}"
+            />
+
+            <button class="primary" onclick="setDirectory()">Set Directory</button>
+            <button class="primary" onclick="loadLogs()">Load</button>
+
+            <select id="logLevel" onchange="filterLogs()">
+                <option value="ALL">ALL</option>
+                <option value="INFO">INFO</option>
+                <option value="WARN">WARN</option>
+                <option value="ERROR">ERROR</option>
+            </select>
+
+            <button class="secondary" onclick="clearLogs()">Clear</button>
+        </div>
+
+        <!-- Logs -->
+        <div id="logContainer" aria-live="polite"></div>
+
+        <script src="${scriptUri}"></script>
+    </body>
+    </html>`;
+}
+
 
     private setDirectory(directory: string) {
         this._logDir = directory;

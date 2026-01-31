@@ -20,6 +20,8 @@ function clearLogs() {
 
 window.addEventListener('message', event => {
     const message = event.data;
+    // Debug: log incoming messages
+    console.log('Webview received message:', message);
 
     switch (message.command) {
         case 'showLogs':
@@ -43,18 +45,21 @@ function showLogs(logs) {
     }
     
     logs.forEach(log => {
-        
-        const logCard = document.createElement('div');
-        logCard.className = 'logCard';
-        logCard.innerHTML = /*html*/`
-            <div display='span' >
-                <b font-style='italic'>Origin:</b> ${log.File}:${log.Function}
-            </div>
-            <div><b>Level:</b style="background-color:aquamarine;"> ${log.Level}</div>
-            <div><b>LogMessage:</b> ${log.Message}</div>`;
-        
-        logCard.classList.add(colorMap[log.Level]);
-        logContainer.appendChild(logCard);
+    const logCard = document.createElement('div');
+    logCard.className = `logCard ${colorMap[log.level]}`;
+
+    logCard.innerHTML = /*html*/`
+        <div class="logHeader">
+            <span class="logOrigin">${log.fileName}:${log.lineNumber}</span>
+            <span class="logLevel ${log.level.toLowerCase()}">${log.level}</span>
+        </div>
+
+        <div class="logMessage">
+            ${log.message}
+        </div>
+    `;
+
+    logContainer.appendChild(logCard);
     });
 }
 

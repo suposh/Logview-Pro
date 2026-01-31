@@ -6,21 +6,18 @@ body {
     color: #333;
 }
 
-#logDir {
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 30%
-}
-
+/* Controls stay as-is */
+#logDir,
 #logLevel {
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+}
+
+#logDir {
+    width: 30%;
 }
 
 button {
@@ -58,48 +55,104 @@ button.secondary:hover {
     background-color: #5a6268;
 }
 
+/* Container */
 #logContainer {
     margin-top: 20px;
-    /* display: flex; */
-    flex-wrap: nowrap;
-    gap: 10px;
-    /* display: inline-block; */
-    /* width:max-content */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 }
+
+/* =========================
+   LOG CARD (IMPROVED)
+   ========================= */
 
 .logCard {
     background-color: white;
     border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: calc(33% - 20px);
-    /* width:max-content; */
-    /* box-sizing: border-box; */
+    border-left: 4px solid transparent; /* level accent */
+    padding: 12px 14px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    width: calc(33% - 16px);
+    box-sizing: border-box;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-.logCard:hover{
-    border-style: double;
-    border-color: red;
-    border: #333;
-    border-width: 0.5em;
-    box-shadow: 0 2px 4px rgba(200, 200, 200, 0.1);
-
+/* Subtle hover (no border explosion 😅) */
+.logCard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
 }
 
+/* Internal spacing */
 .logCard div {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .logCard div:last-child {
     margin-bottom: 0;
 }
 
-div.logCard.ErrorCard {
-    border: 4px solid red;
+/* =========================
+   LOG CONTENT HIERARCHY
+   ========================= */
+
+/* Origin */
+.logCard .logOrigin {
+    font-size: 12px;
+    font-family: monospace;
+    color: #666;
+    opacity: 0.85;
 }
 
+/* Message (most important) */
+.logCard .logMessage {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #222;
+}
+
+/* Level badge */
+.logCard .logLevel {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: uppercase;
+}
+
+/* =========================
+   LEVEL COLORS
+   ========================= */
+
+/* ERROR */
+div.logCard.ErrorCard {
+    border-left-color: #d32f2f;
+}
+
+div.logCard.ErrorCard .logLevel {
+    background-color: rgba(211, 47, 47, 0.15);
+    color: #d32f2f;
+}
+
+/* INFO */
 div.logCard.InfoCard {
-    border: 2px solid green;
+    border-left-color: #2e7d32;
+}
+
+div.logCard.InfoCard .logLevel {
+    background-color: rgba(46, 125, 50, 0.15);
+    color: #2e7d32;
+}
+
+/* WARN (add this — you didn’t have it yet) */
+div.logCard.WarnCard {
+    border-left-color: #b58900;
+}
+
+div.logCard.WarnCard .logLevel {
+    background-color: rgba(181, 137, 0, 0.2);
+    color: #8a6d00;
 }
