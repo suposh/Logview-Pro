@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+#logDir {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 30%
+}
+
+#logLevel {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+button:focus {
+    outline: none;
+}
+
+button.primary {
+    background-color: #007acc;
+    color: white;
+}
+
+button.primary:hover {
+    background-color: #005f99;
+}
+
+button.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+button.secondary:hover {
+    background-color: #5a6268;
+}
+
+#logContainer {
+    margin-top: 20px;
+    /* display: flex; */
+    flex-wrap: nowrap;
+    gap: 10px;
+    /* display: inline-block; */
+    /* width:max-content */
+}
+
+.logCard {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(33% - 20px);
+    /* width:max-content; */
+    /* box-sizing: border-box; */
+}
+
+.logCard:hover{
+    border-style: double;
+    border-color: red;
+    border: #333;
+    border-width: 0.5em;
+    box-shadow: 0 2px 4px rgba(200, 200, 200, 0.1);
+
+}
+
+.logCard div {
+    margin-bottom: 10px;
+}
+
+.logCard div:last-child {
+    margin-bottom: 0;
+}
+
+div.logCard.ErrorCard {
+    border: 4px solid red;
+}
+
+div.logCard.InfoCard {
+    border: 2px solid green;
+}

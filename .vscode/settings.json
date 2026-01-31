@@ -1,0 +1,19 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+	"files.exclude": {
+		"out": false // set this to true to hide the "out" folder with the compiled JS files
+	},
+	"search.exclude": {
+		"out": true // set this to false to include "out" folder in search results
+	},
+	// Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+	"typescript.tsc.autoDetect": "off",
+	"logger5x.logFormat": "string",
+	"logger5x.fields.fileName": "fileName",
+	"logger5x.fields.lineNumber": "lineNumber",
+	"logger5x.fields.level": "level",
+	"logger5x.fields.moduleName": "moduleName",
+	"logger5x.fields.dateTime": "dateTime",
+	"logger5x.fields.message": "message",
+	"logger5x.stringLogRegex": "^\\[(?<dateTime>.+?)\\]\\s+(?<level>\\w+)\\s+(?<fileName>[^:]+):(?<lineNumber>\\d+)\\s+(?<moduleName>\\w+)\\s*-\\s*(?<message>.+)$"
+}

@@ -1,0 +1,53 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp/
+.pnp.js
+
+# Build output
+out/
+dist/
+build/
+*.tsbuildinfo
+.vscode-test/
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Environment
+.env
+.env.*.local
+local.env
+
+# VS Code (keep selected workspace config files)
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Test & coverage
+coverage/
+.nyc_output/
+jest.cache
+
+# Misc
+*.tgz
+*.vsix
+.cache/
+.tmp/
+*.seed
+*.pid
+.eslintcache
+.node_repl_history
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+*.suo
+*.user
