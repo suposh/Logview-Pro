@@ -218,6 +218,24 @@ div.logCard.WarnCard .logLevel {
     color: #8a6d00;
 }
 
+/* Popup for copy notification */
+#copyPopup {
+    display: none;
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    background: #222;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
 /* Responsive: stack controls and cards on small screens */
 @media (max-width: 600px) {
     #logDir {
