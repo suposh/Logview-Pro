@@ -62,9 +62,9 @@ button.secondary:hover {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* LOG CARD: compact, full width, low height */
@@ -188,7 +188,8 @@ button.secondary:hover {
 .logCard .logMessage {
     font-size: 13px;
     color: #222;
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

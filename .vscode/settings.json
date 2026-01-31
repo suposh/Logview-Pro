@@ -15,5 +15,5 @@
 	"logger5x.fields.moduleName": "moduleName",
 	"logger5x.fields.dateTime": "dateTime",
 	"logger5x.fields.message": "message",
-	"logger5x.stringLogRegex": "^\\[(?<dateTime>.+?)\\]\\s+(?<level>\\w+)\\s+(?<fileName>[^:]+):(?<lineNumber>\\d+)\\s+(?<moduleName>\\w+)\\s*-\\s*(?<message>.+)$"
+	"logger5x.stringLogRegex": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?) \\[(?<moduleName>[^\\]]+)\\] \\[(?<level>[^\\]]+)\\] (?<message>.+) \\((?<fileName>[^:]+):(?<lineNumber>\\d+)\\)$"
 }

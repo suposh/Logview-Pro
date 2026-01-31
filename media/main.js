@@ -104,7 +104,10 @@ function showLogs(logs) {
             <span class="logMessage">${message}</span>
         `;
 
-        logCard.classList.add(colorMap[level] || '');
+        // Only add color class if level is present and mapped
+        if (level && colorMap[level]) {
+            logCard.classList.add(colorMap[level]);
+        }
         logContainer.appendChild(logCard);
 
         // Add double-click to copy for .logOrigin

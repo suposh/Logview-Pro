@@ -31,19 +31,19 @@ function parseLogLine(line: string, config: LogParseConfig): ParsedLog | null {
             return null;
         }
     } else if (config.format === 'string') {
-        // Updated regex to match: [dateTime] LEVEL fileName:lineNumber moduleName - message
-        const regex = config.stringRegex
-            ? new RegExp(config.stringRegex)
-            : /^\[(?<dateTime>.+?)\]\s+(?<level>\w+)\s+(?<fileName>[^:]+):(?<lineNumber>\d+)\s+(?<moduleName>\w+)\s*-\s*(?<message>.+)$/;
+        // Use only the regex from settings.json
+        if (!config.stringRegex) return null;
+        const regex = new RegExp(config.stringRegex);
         const match = regex.exec(line);
-        if (match && match.groups) {
+        if (match && (match.groups || match.length >= 6)) {
+            const groups = match.groups || {};
             return {
-                fileName: match.groups.fileName || '',
-                lineNumber: match.groups.lineNumber || '',
-                level: match.groups.level || '',
-                moduleName: match.groups.moduleName || '',
-                dateTime: match.groups.dateTime || '',
-                message: match.groups.message || '',
+                dateTime: groups.dateTime || match[1] || '',
+                moduleName: groups.moduleName || match[2] || '',
+                level: groups.level || match[3] || '',
+                message: groups.message || match[4] || '',
+                fileName: groups.fileName || match[5] || '',
+                lineNumber: groups.lineNumber || match[6] || '',
                 raw: line
             };
         }
@@ -210,14 +210,13 @@ class LogViewerPanel {
     }
 
     private getLogParseConfig(formatOverride?: 'json' | 'string'): LogParseConfig {
-        const config = vscode.workspace.getConfiguration('logger5x');
+        const config = vscode.workspace.getConfiguration('logger5x', vscode.workspace.workspaceFolders?.[0]);
         const format = formatOverride || config.get<'json' | 'string'>('logFormat', 'json');
-        // Always fetch stringRegex from settings, regardless of format
-        let stringRegex = config.get<string>('stringLogRegex');
-        // If not set, use the default regex as string
-        if (!stringRegex) {
-            stringRegex = "^\\[(?<dateTime>.+?)\\]\\s+(?<level>\\w+)\\s+(?<fileName>[^:]+):(?<lineNumber>\\d+)\\s+(?<moduleName>\\w+)\\s*-\\s*(?<message>.+)$";
-        }
+        // Fetch stringRegex from the correct scope (workspace or user)
+        let stringRegex = config.inspect<string>('stringLogRegex')?.workspaceFolderValue
+            || config.inspect<string>('stringLogRegex')?.workspaceValue
+            || config.inspect<string>('stringLogRegex')?.globalValue
+            || config.get<string>('stringLogRegex');
         return {
             format,
             fields: {
