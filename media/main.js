@@ -74,11 +74,13 @@ function showLogs(logs) {
     const logContainer = document.getElementById('logContainer');
     logContainer.innerHTML = '';
 
+    // Use lower-case keys for case-insensitive mapping
     const colorMap = {
-        "ERROR": "ErrorCard",
-        "INFO": "InfoCard",
-        "WARN": "WarnCard",
-        "DEBUG": "InfoCard"
+        "error": "ErrorCard",
+        "info": "InfoCard",
+        "warning": "WarnCard",
+        "warn": "WarnCard",
+        "debug": "DebugCard"
     };
 
     logs.forEach(log => {
@@ -95,7 +97,9 @@ function showLogs(logs) {
             originClass = 'long-filename';
         }
 
-        const level = log.level || '';
+        // Use level as-is, but normalize for color mapping
+        let level = log.level || '';
+        let normalizedLevel = level.toLowerCase();
         const message = log.message || '';
 
         logCard.innerHTML = /*html*/`
@@ -104,9 +108,10 @@ function showLogs(logs) {
             <span class="logMessage">${message}</span>
         `;
 
-        // Only add color class if level is present and mapped
-        if (level && colorMap[level]) {
-            logCard.classList.add(colorMap[level]);
+        // Case-insensitive match for level
+        const colorClass = colorMap[normalizedLevel];
+        if (level && colorClass) {
+            logCard.classList.add(colorClass);
         }
         logContainer.appendChild(logCard);
 
