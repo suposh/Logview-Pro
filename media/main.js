@@ -33,6 +33,13 @@ window.addEventListener('message', event => {
     }
 });
 
+// Configurable filename column width and max chars
+const FILENAME_COL_PX = 340; // ~40 monospace chars at 8-9px/char
+const FILENAME_MAX_CHARS = 40; // Configurable
+
+// Set CSS variable for column width
+document.documentElement.style.setProperty('--origin-col-width', FILENAME_COL_PX + 'px');
+
 function showLogs(logs) {
     const logContainer = document.getElementById('logContainer');
     logContainer.innerHTML = '';
@@ -48,13 +55,22 @@ function showLogs(logs) {
         const logCard = document.createElement('div');
         logCard.className = 'logCard';
 
-        // Use correct property names
-        const origin = `${log.fileName || ''}${log.lineNumber ? ':' + log.lineNumber : ''}`;
+        let originFull = `${log.fileName || ''}${log.lineNumber ? ':' + log.lineNumber : ''}`;
+        let originDisplay = originFull;
+        let originClass = '';
+        if (originFull.length > FILENAME_MAX_CHARS) {
+            // Show first 18 ... last 18 (or split based on max chars)
+            const head = Math.max(10, Math.floor((FILENAME_MAX_CHARS - 3) / 2));
+            const tail = FILENAME_MAX_CHARS - 3 - head;
+            originDisplay = originFull.slice(0, head) + '...' + originFull.slice(-tail);
+            originClass = 'long-filename';
+        }
+
         const level = log.level || '';
         const message = log.message || '';
 
         logCard.innerHTML = /*html*/`
-            <span class="logOrigin">${origin}</span>
+            <span class="logOrigin ${originClass}" data-fullname="${originFull.replace(/"/g, '&quot;')}">${originDisplay}</span>
             <span class="logLevel">${level}</span>
             <span class="logMessage">${message}</span>
         `;
