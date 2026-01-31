@@ -55,104 +55,143 @@ button.secondary:hover {
     background-color: #5a6268;
 }
 
-/* Container */
+/* Container: vertical column, not wrap */
 #logContainer {
     margin-top: 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* =========================
-   LOG CARD (IMPROVED)
-   ========================= */
-
+/* LOG CARD: compact, full width, low height */
 .logCard {
     background-color: white;
-    border: 1px solid #ddd;
-    border-left: 4px solid transparent; /* level accent */
-    padding: 12px 14px;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    width: calc(33% - 16px);
+    border: none;
+    border-left: 4px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    padding: 8px 16px 8px 12px;
+    width: 100%;
+    min-height: 36px;
     box-sizing: border-box;
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    display: grid;
+    grid-template-columns: 130px 90px 1fr;
+    align-items: center;
+    gap: 0 18px;
+    transition: box-shadow 0.15s, transform 0.15s;
+    position: relative;
 }
 
-/* Subtle hover (no border explosion 😅) */
+/* Divider between cards */
+.logCard:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: #ececec;
+    opacity: 0.7;
+}
+
+/* On hover: subtle lift */
 .logCard:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transform: translateY(-1px) scale(1.01);
 }
 
-/* Internal spacing */
-.logCard div {
-    margin-bottom: 6px;
-}
-
-.logCard div:last-child {
-    margin-bottom: 0;
-}
-
-/* =========================
-   LOG CONTENT HIERARCHY
-   ========================= */
-
-/* Origin */
+/* Origin (file:line) */
 .logCard .logOrigin {
     font-size: 12px;
     font-family: monospace;
     color: #666;
     opacity: 0.85;
-}
-
-/* Message (most important) */
-.logCard .logMessage {
-    font-size: 13px;
-    line-height: 1.4;
-    color: #222;
+    min-width: unset;
+    justify-self: start;
+    background: #f2f6fa;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-right: 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Level badge */
 .logCard .logLevel {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 2px 10px;
     font-size: 11px;
     font-weight: 600;
     border-radius: 999px;
     text-transform: uppercase;
+    margin-right: 8px;
+    margin-left: 0;
+    justify-self: start;
 }
 
-/* =========================
-   LEVEL COLORS
-   ========================= */
+/* Message (main content) */
+.logCard .logMessage {
+    font-size: 13px;
+    color: #222;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-self: start;
+}
 
-/* ERROR */
+/* LEVEL COLORS */
 div.logCard.ErrorCard {
     border-left-color: #d32f2f;
 }
-
 div.logCard.ErrorCard .logLevel {
     background-color: rgba(211, 47, 47, 0.15);
     color: #d32f2f;
 }
-
-/* INFO */
 div.logCard.InfoCard {
     border-left-color: #2e7d32;
 }
-
 div.logCard.InfoCard .logLevel {
     background-color: rgba(46, 125, 50, 0.15);
     color: #2e7d32;
 }
-
-/* WARN (add this — you didn’t have it yet) */
 div.logCard.WarnCard {
     border-left-color: #b58900;
 }
-
 div.logCard.WarnCard .logLevel {
     background-color: rgba(181, 137, 0, 0.2);
     color: #8a6d00;
+}
+
+/* Responsive: stack controls and cards on small screens */
+@media (max-width: 600px) {
+    #logDir {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    #logContainer {
+        max-width: 100%;
+        padding: 0 2px;
+    }
+    .logCard {
+        padding: 8px 6px 8px 6px;
+        font-size: 12px;
+        gap: 8px;
+    }
+    .logCard .logOrigin {
+        min-width: 70px;
+        font-size: 11px;
+    }
+    .logCard .logMessage {
+        font-size: 12px;
+    }
 }

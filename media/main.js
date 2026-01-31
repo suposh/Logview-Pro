@@ -36,30 +36,31 @@ window.addEventListener('message', event => {
 function showLogs(logs) {
     const logContainer = document.getElementById('logContainer');
     logContainer.innerHTML = '';
-    
-    colorMap = {
+
+    const colorMap = {
         "ERROR": "ErrorCard",
         "INFO": "InfoCard",
-        "WARN": "InfoCard",
+        "WARN": "WarnCard",
         "DEBUG": "InfoCard"
-    }
-    
+    };
+
     logs.forEach(log => {
-    const logCard = document.createElement('div');
-    logCard.className = `logCard ${colorMap[log.level]}`;
+        const logCard = document.createElement('div');
+        logCard.className = 'logCard';
 
-    logCard.innerHTML = /*html*/`
-        <div class="logHeader">
-            <span class="logOrigin">${log.fileName}:${log.lineNumber}</span>
-            <span class="logLevel ${log.level.toLowerCase()}">${log.level}</span>
-        </div>
+        // Use correct property names
+        const origin = `${log.fileName || ''}${log.lineNumber ? ':' + log.lineNumber : ''}`;
+        const level = log.level || '';
+        const message = log.message || '';
 
-        <div class="logMessage">
-            ${log.message}
-        </div>
-    `;
+        logCard.innerHTML = /*html*/`
+            <span class="logOrigin">${origin}</span>
+            <span class="logLevel">${level}</span>
+            <span class="logMessage">${message}</span>
+        `;
 
-    logContainer.appendChild(logCard);
+        logCard.classList.add(colorMap[level] || '');
+        logContainer.appendChild(logCard);
     });
 }
 
