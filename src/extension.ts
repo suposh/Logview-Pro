@@ -13,6 +13,8 @@ export function activate(context: vscode.ExtensionContext) {
 // Utility: Parse a log line based on config
 function parseLogLine(line: string, config: LogParseConfig): ParsedLog | null {
     if (!line.trim()) return null;
+    // Remove trailing \r (carriage return) for Windows line endings
+    line = line.replace(/\r$/, '');
     if (config.format === 'json') {
         try {
             const obj = JSON.parse(line);
@@ -67,7 +69,6 @@ interface ParsedLog {
     lineNumber: string;
     level: string;
     moduleName: string;
-    dateTime: string;
     message: string;
     raw: string;
 }
@@ -189,10 +190,17 @@ class LogViewerPanel {
         vscode.workspace.getConfiguration().update('logger5x.logDir', directory, vscode.ConfigurationTarget.Global);
     }
 
-    private getLogParseConfig(): LogParseConfig {
+    private getLogParseConfig(formatOverride?: 'json' | 'string'): LogParseConfig {
         const config = vscode.workspace.getConfiguration('logger5x');
+        const format = formatOverride || config.get<'json' | 'string'>('logFormat', 'json');
+        // Always fetch stringRegex from settings, regardless of format
+        let stringRegex = config.get<string>('stringLogRegex');
+        // If not set, use the default regex as string
+        if (!stringRegex) {
+            stringRegex = "^\\[(?<dateTime>.+?)\\]\\s+(?<level>\\w+)\\s+(?<fileName>[^:]+):(?<lineNumber>\\d+)\\s+(?<moduleName>\\w+)\\s*-\\s*(?<message>.+)$";
+        }
         return {
-            format: config.get<'json' | 'string'>('log', 'json'),
+            format,
             fields: {
                 fileName: config.get<string>('fields.fileName', 'fileName'),
                 lineNumber: config.get<string>('fields.lineNumber', 'lineNumber'),
@@ -201,7 +209,7 @@ class LogViewerPanel {
                 dateTime: config.get<string>('fields.dateTime', 'dateTime'),
                 message: config.get<string>('fields.message', 'message'),
             },
-            stringRegex: config.get<string>('stringLogRegex')
+            stringRegex
         };
     }
 
@@ -214,14 +222,19 @@ class LogViewerPanel {
                     return;
                 }
 
-                const logFiles = files.filter(file => file.endsWith('.log'));
+                // Only process .log and .json files
+                const logFiles = files.filter(file => file.endsWith('.log') || file.endsWith('.json'));
                 const logs: ParsedLog[] = [];
-                const parseConfig = this.getLogParseConfig();
 
                 logFiles.forEach(file => {
                     const filePath = path.join(logDir, file);
                     const data = fs.readFileSync(filePath, 'utf8');
                     const logLines = data.split('\n').filter(line => line.trim());
+
+                    // Determine format based on file extension
+                    const format: 'json' | 'string' = file.endsWith('.json') ? 'json' : 'string';
+                    const parseConfig = this.getLogParseConfig(format);
+
                     logLines.forEach(line => {
                         const log = parseLogLine(line, parseConfig);
                         if (log) {
