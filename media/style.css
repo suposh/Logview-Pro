@@ -314,6 +314,8 @@ div.logCard.DebugCard .logLevel {
     user-select: none;
     position: relative;
     padding-right: 4px;
+    justify-content: center; /* Center heading content horizontally */
+    text-align: center;      /* Center text inside header cell */
 }
 
 /* Draggable resize handle */
