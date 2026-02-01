@@ -195,23 +195,19 @@ class LogViewerPanel {
         <div id="logHeader" class="logHeader">
             <span class="headerCell" data-col="origin">
                 File:Line
-                <a href="#" class="resizeAnchor" data-col="origin" data-dir="-">-</a>
-                <a href="#" class="resizeAnchor" data-col="origin" data-dir="+">+</a>
+                <span class="col-resize-handle" data-col="origin"></span>
             </span>
             <span class="headerCell" data-col="module">
                 Module
-                <a href="#" class="resizeAnchor" data-col="module" data-dir="-">-</a>
-                <a href="#" class="resizeAnchor" data-col="module" data-dir="+">+</a>
+                <span class="col-resize-handle" data-col="module"></span>
             </span>
             <span class="headerCell" data-col="level">
                 Level
-                <a href="#" class="resizeAnchor" data-col="level" data-dir="-">-</a>
-                <a href="#" class="resizeAnchor" data-col="level" data-dir="+">+</a>
+                <span class="col-resize-handle" data-col="level"></span>
             </span>
             <span class="headerCell" data-col="message">
                 Message
-                <a href="#" class="resizeAnchor" data-col="message" data-dir="-">-</a>
-                <a href="#" class="resizeAnchor" data-col="message" data-dir="+">+</a>
+                <!-- No handle for last column (flexible) -->
             </span>
         </div>
 

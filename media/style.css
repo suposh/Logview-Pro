@@ -301,9 +301,10 @@ div.logCard.DebugCard .logLevel {
     background: #e8eef7;
     border-radius: 4px 4px 0 0;
     margin-bottom: 2px;
+    margin-top: 18px; /* Add margin above heading row */
     padding: 4px 16px 4px 12px;
-    gap: 0 18px;
-    column-gap: 14px; /* Add margin between columns */
+    gap: 0 14px;
+    position: relative;
 }
 
 .headerCell {
@@ -311,23 +312,154 @@ div.logCard.DebugCard .logLevel {
     align-items: center;
     gap: 4px;
     user-select: none;
-    padding-right: 4px; /* Add a little space at the end of each header cell */
+    position: relative;
+    padding-right: 4px;
 }
 
-.resizeAnchor {
-    display: inline-block;
+/* Draggable resize handle */
+.col-resize-handle {
+    width: 10px;
+    height: 28px;
+    cursor: col-resize;
+    background: transparent;
     margin-left: 2px;
-    margin-right: 2px;
-    font-size: 13px;
-    color: #007acc;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 2px;
-    padding: 0 4px;
-    transition: background 0.1s;
+    margin-right: -5px;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, box-shadow 0.15s;
+    opacity: 1;
 }
 
-.resizeAnchor:hover {
-    background: #d0e6fa;
-    color: #005f99;
+.col-resize-handle::before {
+    content: "";
+    display: block;
+    width: 3px;
+    height: 18px;
+    background: #b3b3b3;
+    border-radius: 2px;
+    margin: 0 auto;
+    transition: background 0.15s;
+}
+
+.col-resize-handle:hover,
+.col-resize-handle.active {
+    background: #e3eafc;
+    box-shadow: 0 0 0 2px #b3d1f7;
+}
+
+.col-resize-handle:hover::before,
+.col-resize-handle.active::before {
+    background: #1976d2;
+}
+
+/* Toolbar redesign */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    background: #e8eef7;
+    border-radius: 8px;
+    padding: 18px 24px 14px 24px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+}
+
+#logDir {
+    width: 340px;
+    max-width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #b3c6e0;
+    border-radius: 6px;
+    font-size: 15px;
+    background: #f8fafc;
+    color: #222;
+    transition: border 0.15s, box-shadow 0.15s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+#logDir:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 0 2px #b3d1f7;
+}
+
+#logLevel {
+    padding: 10px 14px;
+    border: 1.5px solid #b3c6e0;
+    border-radius: 6px;
+    font-size: 15px;
+    background: #f8fafc;
+    color: #222;
+    transition: border 0.15s, box-shadow 0.15s;
+}
+
+#logLevel:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 0 2px #b3d1f7;
+}
+
+button {
+    padding: 10px 20px;
+    margin-right: 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #e3eafc;
+    color: #1976d2;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+button.primary {
+    background: #1976d2;
+    color: #fff;
+}
+
+button.primary:hover, button.primary:focus {
+    background: #1251a3;
+    color: #fff;
+}
+
+button.secondary {
+    background: #f6f6f6;
+    color: #444;
+}
+
+button.secondary:hover, button.secondary:focus {
+    background: #e0e0e0;
+    color: #222;
+}
+
+button:hover, button:focus {
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    outline: none;
+}
+
+@media (max-width: 800px) {
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px 0;
+        padding: 14px 8px 10px 8px;
+    }
+    #logDir, #logLevel {
+        width: 100%;
+        min-width: 0;
+    }
+    button {
+        width: 100%;
+        margin-bottom: 4px;
+    }
 }

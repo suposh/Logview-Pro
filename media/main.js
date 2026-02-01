@@ -41,10 +41,81 @@ const FILENAME_MAX_CHARS = 40; // Max chars before truncation
 const ORIGIN_COL_PX = 340;
 const MODULE_COL_PX = 120;
 const LEVEL_COL_PX = 90;
+const MIN_ORIGIN_COL_PX = 80;
+const MIN_MODULE_COL_PX = 60;
+const MIN_LEVEL_COL_PX = 50;
 
 document.documentElement.style.setProperty('--origin-col-width', ORIGIN_COL_PX + 'px');
 document.documentElement.style.setProperty('--module-col-width', MODULE_COL_PX + 'px');
 document.documentElement.style.setProperty('--level-col-width', LEVEL_COL_PX + 'px');
+
+// Draggable column resizing
+window.addEventListener('DOMContentLoaded', () => {
+    const colVars = {
+        origin: { css: '--origin-col-width', min: MIN_ORIGIN_COL_PX },
+        module: { css: '--module-col-width', min: MIN_MODULE_COL_PX },
+        level: { css: '--level-col-width', min: MIN_LEVEL_COL_PX }
+    };
+
+    let dragging = null;
+    let startX = 0;
+    let startWidth = 0;
+
+    document.querySelectorAll('.col-resize-handle').forEach(handle => {
+        handle.addEventListener('mousedown', function (e) {
+            const col = handle.getAttribute('data-col');
+            if (!colVars[col]) return;
+            dragging = { col, handle };
+            startX = e.clientX;
+            // Always get the current width from the grid column, not the header cell
+            startWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue(colVars[col].css)) || colVars[col].min;
+            handle.classList.add('active');
+            document.body.style.cursor = 'col-resize';
+            e.preventDefault();
+        });
+    });
+
+    window.addEventListener('mousemove', function (e) {
+        if (!dragging) return;
+        const { col, handle } = dragging;
+        const delta = e.clientX - startX;
+        let newWidth = startWidth + delta;
+        // Minimum width is the header cell's offsetWidth or configured min
+        const headerCell = document.querySelector(`.headerCell[data-col="${col}"]`);
+        // Use offsetWidth of the headerCell's first child (the label text) for true min
+        let labelMin = 0;
+        if (headerCell && headerCell.childNodes.length > 0) {
+            for (let i = 0; i < headerCell.childNodes.length; ++i) {
+                const node = headerCell.childNodes[i];
+                if (node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.classList && !node.classList.contains('col-resize-handle'))) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        // Create a temp span to measure text node
+                        const span = document.createElement('span');
+                        span.style.visibility = 'hidden';
+                        span.style.position = 'absolute';
+                        span.textContent = node.textContent.trim();
+                        document.body.appendChild(span);
+                        labelMin = Math.max(labelMin, span.offsetWidth + 24); // 24px for padding/gap
+                        document.body.removeChild(span);
+                    } else {
+                        labelMin = Math.max(labelMin, node.offsetWidth + 24);
+                    }
+                }
+            }
+        }
+        const minWidth = Math.max(colVars[col].min, labelMin);
+        newWidth = Math.max(minWidth, newWidth);
+        document.documentElement.style.setProperty(colVars[col].css, newWidth + 'px');
+    });
+
+    window.addEventListener('mouseup', function () {
+        if (dragging) {
+            dragging.handle.classList.remove('active');
+            document.body.style.cursor = '';
+            dragging = null;
+        }
+    });
+});
 
 // Interactive anchors for resizing columns
 window.addEventListener('DOMContentLoaded', () => {
