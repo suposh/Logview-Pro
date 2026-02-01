@@ -1,8 +1,14 @@
 const vscode = acquireVsCodeApi();
 
 function setDirectory() {
-    const logDir = document.getElementById('logDir').value;
-    vscode.postMessage({ command: 'setDirectory', text: logDir });
+    let logDir = document.getElementById('logDir').value.trim();
+    // Support relative paths: resolve relative to workspace root if available
+    if (logDir && !/^[a-zA-Z]:[\\/]|^\//.test(logDir)) {
+        // Not absolute, so treat as relative to workspace root
+        vscode.postMessage({ command: 'setDirectory', text: logDir, isRelative: true });
+    } else {
+        vscode.postMessage({ command: 'setDirectory', text: logDir });
+    }
 }
 
 function loadLogs() {

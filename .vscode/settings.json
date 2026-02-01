@@ -8,12 +8,12 @@
 	},
 	// Turn off tsc task auto detection since we have the necessary tasks as npm scripts
 	"typescript.tsc.autoDetect": "off",
-	"logger5x.logFormat": "string",
-	"logger5x.fields.fileName": "fileName",
-	"logger5x.fields.lineNumber": "lineNumber",
-	"logger5x.fields.level": "level",
-	"logger5x.fields.moduleName": "moduleName",
-	"logger5x.fields.dateTime": "dateTime",
-	"logger5x.fields.message": "message",
-	"logger5x.stringLogRegex": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?) \\[(?<moduleName>[^\\]]+)\\] \\[(?<level>[^\\]]+)\\] (?<message>.+) \\((?<fileName>[^:]+):(?<lineNumber>\\d+)\\)$"
+	"logviewpro.logFormat": "string",
+	"logviewpro.fields.fileName": "fileName",
+	"logviewpro.fields.lineNumber": "lineNumber",
+	"logviewpro.fields.level": "level",
+	"logviewpro.fields.moduleName": "moduleName",
+	"logviewpro.fields.dateTime": "dateTime",
+	"logviewpro.fields.message": "message",
+	"logviewpro.stringLogRegex": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?) \\[(?<moduleName>[^\\]]+)\\] \\[(?<level>[^\\]]+)\\] (?<message>.+) \\((?<fileName>[^:]+):(?<lineNumber>\\d+)\\)$"
 }

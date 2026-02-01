@@ -1,21 +1,22 @@
 {
-  "name": "logger5x",
-  "displayName": "Logger5x",
-  "publisher": "mehtacorp",
+  "name": "logviewpro",
+  "displayName": "LogView Pro",
+  "publisher": "Carre Labs",
   "description": "",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.89.0"
   },
   "categories": [
-    "Other"
+    "Visualization",
+    "Testing"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "logger5x.openLogViewer",
+        "command": "logviewpro.openLogViewer",
         "title": "Open Log Viewer"
       }
     ]

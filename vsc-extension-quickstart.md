@@ -40,14 +40,14 @@
 This extension supports both JSON and string log formats. You can configure the log format and field mapping in your VS Code settings (`settings.json`):
 
 ```json
-"logger5x.logFormat": "json", // or "string"
-"logger5x.fields.fileName": "fileName",
-"logger5x.fields.lineNumber": "lineNumber",
-"logger5x.fields.level": "level",
-"logger5x.fields.moduleName": "moduleName",
-"logger5x.fields.dateTime": "dateTime",
-"logger5x.fields.message": "message",
-"logger5x.stringLogRegex": "your-regex-here" // (optional, for string logs)
+"logviewpro.logFormat": "json", // or "string"
+"logviewpro.fields.fileName": "fileName",
+"logviewpro.fields.lineNumber": "lineNumber",
+"logviewpro.fields.level": "level",
+"logviewpro.fields.moduleName": "moduleName",
+"logviewpro.fields.dateTime": "dateTime",
+"logviewpro.fields.message": "message",
+"logviewpro.stringLogRegex": "your-regex-here" // (optional, for string logs)
 ```
 
 - For JSON logs, set the field names as they appear in your log objects.

@@ -4,7 +4,7 @@ import * as path from 'path';
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
-        vscode.commands.registerCommand('logger5x.openLogViewer', () => {
+        vscode.commands.registerCommand('logviewpro.openLogViewer', () => {
             LogViewerPanel.createOrShow(context.extensionUri);
         })
     );
@@ -113,7 +113,8 @@ class LogViewerPanel {
             message => {
                 switch (message.command) {
                     case 'setDirectory':
-                        this.setDirectory(message.text);
+                        // Support relative path flag from webview
+                        this.setDirectory(message.text, message.isRelative);
                         return;
                     case 'loadLogs':
                         this.loadLogs();
@@ -219,13 +220,20 @@ class LogViewerPanel {
     </html>`;
     }
 
-    private setDirectory(directory: string) {
-        this._logDir = directory;
-        vscode.workspace.getConfiguration().update('logger5x.logDir', directory, vscode.ConfigurationTarget.Global);
+    private setDirectory(directory: string, isRelative?: boolean) {
+        let dir = directory;
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        if (isRelative && workspaceFolders && workspaceFolders.length > 0) {
+            const rootFolder = workspaceFolders[0];
+            const root = rootFolder.uri.fsPath;
+            dir = path.resolve(root, directory);
+        }
+        this._logDir = dir;
+        vscode.workspace.getConfiguration().update('logviewpro.logDir', dir, vscode.ConfigurationTarget.Global);
     }
 
     private getLogParseConfig(formatOverride?: 'json' | 'string'): LogParseConfig {
-        const config = vscode.workspace.getConfiguration('logger5x', vscode.workspace.workspaceFolders?.[0]);
+        const config = vscode.workspace.getConfiguration('logviewpro', vscode.workspace.workspaceFolders?.[0]);
         const format = formatOverride || config.get<'json' | 'string'>('logFormat', 'json');
         // Fetch stringRegex from the correct scope (workspace or user)
         let stringRegex = config.inspect<string>('stringLogRegex')?.workspaceFolderValue
@@ -247,7 +255,7 @@ class LogViewerPanel {
     }
 
     private loadLogs() {
-        const logDir = this._logDir || vscode.workspace.getConfiguration().get('logger5x.logDir') as string;
+        const logDir = this._logDir || vscode.workspace.getConfiguration().get('logviewpro.logDir') as string;
         if (logDir) {
             fs.readdir(logDir, (err, files) => {
                 if (err) {

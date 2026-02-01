@@ -1,6 +1,6 @@
-# logger5x README
+# logviewpro README
 
-This is the README for your extension "logger5x". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "logviewpro". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
