@@ -265,7 +265,7 @@ class LogViewerPanel {
 
                 // Only process .log and .json files
                 const logFiles = files.filter(file => file.endsWith('.log') || file.endsWith('.json'));
-                const logs: ParsedLog[] = [];
+                let logs: ParsedLog[] = [];
 
                 logFiles.forEach(file => {
                     const filePath = path.join(logDir, file);
@@ -276,17 +276,40 @@ class LogViewerPanel {
                     const format: 'json' | 'string' = file.endsWith('.json') ? 'json' : 'string';
                     const parseConfig = this.getLogParseConfig(format);
 
-                    logLines.forEach(line => {
+                    logLines.forEach((line, idx) => {
                         const log = parseLogLine(line, parseConfig);
                         if (log) {
                             // If fileName is missing, use the log file name
                             if (!log.fileName) log.fileName = file;
+                            // Attach file and line index for stable sort
+                            (log as any)._file = file;
+                            (log as any)._fileIndex = idx;
                             logs.push(log);
                         }
                     });
                 });
 
-                this._panel.webview.postMessage({ command: 'showLogs', logs });
+                // Sort logs by dateTime ascending, then by file, then by line index
+                logs.sort((a, b) => {
+                    // Parse ISO date
+                    const ta = Date.parse(a.dateTime);
+                    const tb = Date.parse(b.dateTime);
+                    if (ta !== tb) return ta - tb; // Oldest first (bottom)
+                    // If same time, sort by file name (stable for multi-file)
+                    if ((a as any)._file < (b as any)._file) return -1;
+                    if ((a as any)._file > (b as any)._file) return 1;
+                    // If same file and time, preserve original order (first line is older)
+                    return (a as any)._fileIndex - (b as any)._fileIndex;
+                });
+
+                // Remove temp sort fields before sending to webview
+                logs = logs.map(log => {
+                    const { _file, _fileIndex, ...rest } = log as any;
+                    return rest;
+                });
+
+                // Send logs in reverse order so most recent is on top
+                this._panel.webview.postMessage({ command: 'showLogs', logs: logs.reverse() });
             });
         } else {
             vscode.window.showErrorMessage('Log directory is not set');
