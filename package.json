@@ -2,7 +2,7 @@
   "name": "logviewpro",
   "displayName": "LogView Pro",
   "publisher": "Carre Labs",
-  "description": "",
+  "description": "A powerful log viewer extension for Visual Studio Code.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.89.0"
@@ -17,7 +17,7 @@
     "commands": [
       {
         "command": "logviewpro.openLogViewer",
-        "title": "Open Log Viewer"
+        "title": "Open LogView Pro"
       }
     ]
   },
