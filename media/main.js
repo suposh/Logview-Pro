@@ -97,13 +97,14 @@ function showLogs(logs) {
             originClass = 'long-filename';
         }
 
-        // Use level as-is, but normalize for color mapping
         let level = log.level || '';
         let normalizedLevel = level.toLowerCase();
+        const moduleName = log.moduleName || '';
         const message = log.message || '';
 
         logCard.innerHTML = /*html*/`
             <span class="logOrigin ${originClass}" data-fullname="${originFull.replace(/"/g, '&quot;')}">${originDisplay}</span>
+            <span class="logModule">${moduleName}</span>
             <span class="logLevel">${level}</span>
             <span class="logMessage">${message}</span>
         `;
@@ -119,7 +120,6 @@ function showLogs(logs) {
         const originElem = logCard.querySelector('.logOrigin');
         if (originElem) {
             originElem.addEventListener('dblclick', function (e) {
-                // Use Clipboard API
                 navigator.clipboard.writeText(originFull).then(() => {
                     showCopyPopup(`Copied: ${originFull}`);
                 });

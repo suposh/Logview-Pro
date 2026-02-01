@@ -79,7 +79,7 @@ button.secondary:hover {
     min-height: 36px;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: var(--origin-col-width, 340px) 90px 1fr;
+    grid-template-columns: var(--origin-col-width, 340px) 120px 90px 1fr;
     align-items: center;
     gap: 0 18px;
     transition: box-shadow 0.15s, transform 0.15s;
@@ -272,4 +272,21 @@ div.logCard.DebugCard .logLevel {
     .logCard .logMessage {
         font-size: 12px;
     }
+}
+
+/* Module name column */
+.logCard .logModule {
+    font-size: 12px;
+    color: #3a3a3a;
+    font-family: "Fira Mono", "Consolas", "Menlo", "Monaco", "Liberation Mono", monospace;
+    background: #f6f6f6;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 0;
+    justify-self: start;
+    min-width: 0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
