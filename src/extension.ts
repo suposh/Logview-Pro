@@ -155,14 +155,14 @@ class LogViewerPanel {
 
     // Accept defaultLogDir as parameter
     private _getHtmlForWebview(webview: vscode.Webview, defaultLogDir: string) {
-    const scriptUri = webview.asWebviewUri(
-        vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js')
-    );
-    const styleUri = webview.asWebviewUri(
-        vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css')
-    );
+        const scriptUri = webview.asWebviewUri(
+            vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js')
+        );
+        const styleUri = webview.asWebviewUri(
+            vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css')
+        );
 
-    return /*html*/`
+        return /*html*/`
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -172,7 +172,6 @@ class LogViewerPanel {
         <link href="${styleUri}" rel="stylesheet" />
     </head>
     <body>
-
         <!-- Toolbar -->
         <div class="toolbar">
             <input
@@ -181,18 +180,39 @@ class LogViewerPanel {
                 placeholder="Set Log Directory"
                 value="${defaultLogDir.replace(/\\/g, '\\\\')}"
             />
-
             <button class="primary" onclick="setDirectory()">Set Directory</button>
             <button class="primary" onclick="loadLogs()">Load</button>
-
             <select id="logLevel" onchange="filterLogs()">
                 <option value="ALL">ALL</option>
                 <option value="INFO">INFO</option>
                 <option value="WARN">WARN</option>
                 <option value="ERROR">ERROR</option>
             </select>
-
             <button class="secondary" onclick="clearLogs()">Clear</button>
+        </div>
+
+        <!-- Column header with resizable anchors -->
+        <div id="logHeader" class="logHeader">
+            <span class="headerCell" data-col="origin">
+                File:Line
+                <a href="#" class="resizeAnchor" data-col="origin" data-dir="-">-</a>
+                <a href="#" class="resizeAnchor" data-col="origin" data-dir="+">+</a>
+            </span>
+            <span class="headerCell" data-col="module">
+                Module
+                <a href="#" class="resizeAnchor" data-col="module" data-dir="-">-</a>
+                <a href="#" class="resizeAnchor" data-col="module" data-dir="+">+</a>
+            </span>
+            <span class="headerCell" data-col="level">
+                Level
+                <a href="#" class="resizeAnchor" data-col="level" data-dir="-">-</a>
+                <a href="#" class="resizeAnchor" data-col="level" data-dir="+">+</a>
+            </span>
+            <span class="headerCell" data-col="message">
+                Message
+                <a href="#" class="resizeAnchor" data-col="message" data-dir="-">-</a>
+                <a href="#" class="resizeAnchor" data-col="message" data-dir="+">+</a>
+            </span>
         </div>
 
         <!-- Logs -->
@@ -201,8 +221,7 @@ class LogViewerPanel {
         <script src="${scriptUri}"></script>
     </body>
     </html>`;
-}
-
+    }
 
     private setDirectory(directory: string) {
         this._logDir = directory;

@@ -79,7 +79,8 @@ button.secondary:hover {
     min-height: 36px;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: var(--origin-col-width, 340px) 120px 90px 1fr;
+    grid-template-columns: var(--origin-col-width, 340px) var(--module-col-width, 120px) var(--level-col-width, 90px) 1fr;
+    column-gap: 14px; /* Add margin between columns */
     align-items: center;
     gap: 0 18px;
     transition: box-shadow 0.15s, transform 0.15s;
@@ -289,4 +290,44 @@ div.logCard.DebugCard .logLevel {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.logHeader {
+    display: grid;
+    grid-template-columns: var(--origin-col-width, 340px) var(--module-col-width, 120px) var(--level-col-width, 90px) 1fr;
+    align-items: center;
+    font-weight: bold;
+    font-size: 13px;
+    background: #e8eef7;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 2px;
+    padding: 4px 16px 4px 12px;
+    gap: 0 18px;
+    column-gap: 14px; /* Add margin between columns */
+}
+
+.headerCell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+    padding-right: 4px; /* Add a little space at the end of each header cell */
+}
+
+.resizeAnchor {
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 13px;
+    color: #007acc;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 0 4px;
+    transition: background 0.1s;
+}
+
+.resizeAnchor:hover {
+    background: #d0e6fa;
+    color: #005f99;
 }
