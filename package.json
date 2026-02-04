@@ -1,8 +1,9 @@
 {
   "name": "logviewpro",
   "displayName": "LogView Pro",
-  "publisher": "Carre Labs",
+  "publisher": "CartinLabs",
   "description": "A powerful log viewer extension for Visual Studio Code.",
+  "repository": "https://github.com/suposh/Logview-Pro",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.89.0"

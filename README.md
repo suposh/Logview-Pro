@@ -1,71 +1,71 @@
-# logviewpro README
+# LogViewPro
 
-This is the README for your extension "logviewpro". After writing up a brief description, we recommend including the following sections.
+LogViewPro is a powerful, configurable log viewer extension for Visual Studio Code. It allows you to view, filter, and analyze logs from multiple files, merging them by timestamp and supporting both JSON and custom string log formats via regex.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Multi-file log merging:** Automatically merges logs from all `.log` and `.json` files in a directory, sorted by timestamp.
+- **Configurable log parsing:** Supports both JSON and string log formats. String logs are parsed using a user-configurable regex.
+- **Columnar view:** Displays logs in a card-based, columnar layout with resizable columns for File:Line, Module, Level, and Message.
+- **Interactive UI:** Filter logs by level, clear logs, and set the log directory directly from the UI.
+- **Relative path support:** Set log directory using absolute or workspace-relative paths.
+- **Copy to clipboard:** Double-click the File:Line field to copy it, with a popup notification.
+- **Responsive design:** Works well on HiDPI screens and adapts to different window sizes.
+- **Performance:** Efficiently handles thousands of log lines.
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- Visual Studio Code v1.89.0 or later.
+- Node.js for development (if building from source).
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+LogViewPro contributes the following settings (add these to your `.vscode/settings.json` or user settings):
 
-For example:
+```jsonc
+"logviewpro.logFormat": "string", // or "json"
+"logviewpro.fields.fileName": "fileName",
+"logviewpro.fields.lineNumber": "lineNumber",
+"logviewpro.fields.level": "level",
+"logviewpro.fields.moduleName": "moduleName",
+"logviewpro.fields.dateTime": "dateTime",
+"logviewpro.fields.message": "message",
+"logviewpro.stringLogRegex": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?) \\[(?<moduleName>[^\\]]+)\\] \\[(?<level>[^\\]]+)\\] (?<message>.+) \\((?<fileName>[^:]+):(?<lineNumber>\\d+)\\)$"
+```
 
-This extension contributes the following settings:
+- For JSON logs, set the field names as they appear in your log objects.
+- For string logs, provide a regex with named groups: `fileName`, `lineNumber`, `level`, `moduleName`, `dateTime`, `message`.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Usage
+
+1. Open the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and run **"LogViewPro: Open Log Viewer"**.
+2. Set the log directory (absolute or relative to workspace).
+3. Click **Load** to view logs. Use the filter dropdown to filter by log level.
+4. Resize columns by dragging the markers in the header row.
+5. Double-click a File:Line field to copy it to clipboard.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- Very large log files (10,000+ lines) may impact performance. For best results, keep log directories to a reasonable size.
+- Only `.log` and `.json` files are processed.
+- Regex parsing for string logs must match the log format exactly.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- Initial release: multi-file log merging, configurable parsing, interactive UI, and clipboard support.
 
 ---
 
 ## Following extension guidelines
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+This extension follows [VS Code Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines) and best practices for UI and performance.
 
 ## For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- [Visual Studio Code API](https://code.visualstudio.com/api)
+- [VS Code Extension Marketplace](https://marketplace.visualstudio.com/)
 
-**Enjoy!**
+**Enjoy using LogViewPro!**
